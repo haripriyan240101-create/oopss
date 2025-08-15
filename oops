@@ -1,0 +1,77 @@
+package hello;
+class SmartDevice {
+	
+ protected String deviceName;
+ protected boolean isOn;
+
+ public SmartDevice(String name) {
+	 System.out.println( "HARI PRIYAN S ");
+	 System.out.println( "2117240070101 ");
+     this.deviceName = name;
+     this.isOn = false;
+ }
+
+ public void turnOn() {
+     isOn = true;
+     System.out.println(deviceName + " is turned ON.");
+ }
+
+ public void turnOff() {
+     isOn = false;
+   
+     System.out.println(deviceName + " is turned OFF.");
+ }
+
+ public void status() {
+     System.out.println(deviceName + " is " + (isOn ? "ON" : "OFF"));
+ }
+}
+
+//Subclass: SmartCamera
+class SmartCamera extends SmartDevice {
+ private int resolution;
+
+ public SmartCamera(String name, int resolution) {
+     super(name);
+     this.resolution = resolution;
+ }
+
+ @Override
+ public void turnOn() {
+     super.turnOn();
+     System.out.println(deviceName + " is recording in " + resolution + "MP resolution.");
+ }
+
+ public void startRecording() {
+     if (isOn) {
+         System.out.println(deviceName + " started recording.");
+     } else {
+         System.out.println("Cannot record. " + deviceName + " is OFF.");
+     }
+ }
+
+ public void stopRecording() {
+     if (isOn) {
+         System.out.println(deviceName + " stopped recording.");
+     } else {
+         System.out.println(deviceName + " is already OFF.");
+     }
+ }
+}
+
+//✅ Main class (public) with main method
+public class Main {
+ public static void main(String[] args) {
+     SmartCamera myCamera = new SmartCamera("Living Room Camera", 12);
+    
+
+     myCamera.status();
+     myCamera.startRecording();
+     myCamera.turnOn();
+     myCamera.startRecording();
+     myCamera.stopRecording();
+     myCamera.turnOff();
+ }
+}
+
+
