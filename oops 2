@@ -1,0 +1,65 @@
+package HELLO;
+
+//File: ExceptionDemo.java
+public class Exceptiondemo {
+
+ // --- Example of a Checked Exception ---
+ static void checkedExample(boolean propagate) throws Exception {
+	 
+     if (propagate) {
+         // Propagate (throws to caller)
+         throw new Exception("This is a CHECKED exception (propagated).");
+     } else {
+         // Handle locally
+         try {
+             throw new Exception("This is a CHECKED exception (handled locally).");
+         } catch (Exception e) {
+             System.out.println("Handled CHECKED exception locally: " + e.getMessage());
+             e.printStackTrace(); // show stack trace
+         }
+     }
+ }
+
+ // --- Example of an Unchecked Exception (RuntimeException) ---
+ static void uncheckedExample(boolean propagate) {
+     if (propagate) {
+         // Propagate (no throws keyword needed for unchecked)
+         throw new RuntimeException("This is an UNCHECKED exception (propagated).");
+     } else {
+         // Handle locally
+         try {
+             throw new RuntimeException("This is an UNCHECKED exception (handled locally).");
+         } catch (RuntimeException e) {
+             System.out.println("Handled UNCHECKED exception locally: " + e.getMessage());
+             e.printStackTrace(); // show stack trace
+         }
+     }
+ }
+
+ public static void main(String[] args) {
+	 System.out.println("HARI PRIYAN S");
+	 System.out.println("2117240070101");
+	
+	 
+	 System.out.println("=== Checked Exception Demo ===");
+     try {
+    	
+         checkedExample(false);  // handle locally
+         checkedExample(true);   // propagate
+     } catch (Exception e) {
+    	 
+         System.out.println("Caught propagated CHECKED exception in main: " + e.getMessage());
+         e.printStackTrace();
+     }
+
+     System.out.println("\n=== Unchecked Exception Demo ===");
+     try {
+         uncheckedExample(false); // handle locally
+         uncheckedExample(true);  // propagate
+     } catch (RuntimeException e) {
+         System.out.println("Caught propagated UNCHECKED exception in main: " + e.getMessage());
+         e.printStackTrace();
+     }
+ }
+}
+
