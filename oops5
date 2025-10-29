@@ -1,0 +1,76 @@
+package assignment;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.swing.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
+
+public class SimplePDFViewer extends JFrame {
+    private PDDocument document;
+    private PDFRenderer renderer;
+    private JLabel imageLabel;
+    private int currentPage = 0;
+
+    public SimplePDFViewer(String filePath) {
+        super("PDF Viewer (lib)");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+
+        try {
+            // Load PDF
+            document = PDDocument.load(new File(filePath));
+            renderer = new PDFRenderer(document);
+
+            // Create UI components
+            imageLabel = new JLabel();
+            JScrollPane scrollPane = new JScrollPane(imageLabel);
+            add(scrollPane, BorderLayout.CENTER);
+
+            // Control buttons
+            JPanel controlPanel = new JPanel();
+            JButton prevButton = new JButton("Previous");
+            JButton nextButton = new JButton("Next");
+            controlPanel.add(prevButton);
+            controlPanel.add(nextButton);
+            add(controlPanel, BorderLayout.SOUTH);
+
+            // Button listeners
+            prevButton.addActionListener(e -> showPage(currentPage - 1));
+            nextButton.addActionListener(e -> showPage(currentPage + 1));
+
+            // Show first page
+            showPage(0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading PDF: " + e.getMessage());
+        }
+    }
+
+    private void showPage(int pageIndex) {
+        try {
+            if (pageIndex >= 0 && pageIndex < document.getNumberOfPages()) {
+                currentPage = pageIndex;
+                BufferedImage image = renderer.renderImageWithDPI(pageIndex, 100);
+                imageLabel.setIcon(new ImageIcon(image));
+                setTitle("PDF Viewer - Page " + (currentPage + 1) + "/" + document.getNumberOfPages());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Select a PDF file");
+            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                new SimplePDFViewer(chooser.getSelectedFile().getAbsolutePath()).setVisible(true);
+            }
+        });
+    }
+}
